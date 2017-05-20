@@ -1,0 +1,33 @@
+body {
+    background-color: #000;
+    font-family: 'Roboto', sans-serif;
+}
+
+.wrapper {
+    width: 100%;
+    margin: 10px auto;
+    border: 1px solid #ccc;
+}
+
+#log {
+    height: 80vh;
+    background-color: #333;
+    padding: 15px;
+}
+
+.content h1 {
+    color: #3F51B5;
+    margin: 0;
+}
+
+.content {
+    padding: 15px;
+}
+
+.controls {
+    margin-top: 15px;
+}
+
+p {
+    margin: 0;
+}
