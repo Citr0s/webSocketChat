@@ -1,38 +1,37 @@
-var ws = new WebSocket('ws://localhost:7253'),
-    button = document.getElementById('sendButton'),
-    clearButton = document.getElementById('clearButton'),
-    chat = [];
+var ws = new WebSocket('ws://localhost:7253');
+var button = document.getElementById('sendButton');
+var chat = [];
 
 ws.onopen = function(){
   console.log('WebSocket connection is open...');
-  button.addEventListener('click', sendText);
-  ws.send(chat);
 
-  function sendText(){
-    if(chat != ''){
-      chat = JSON.parse(chat);
-      chat.push(document.getElementById('message').value);
-    }else{
-      chat.push(document.getElementById('message').value);
-    }
-    chat = JSON.stringify(chat);
-    ws.send(chat);
-    document.getElementById('message').value = '';
-  }
+  button.addEventListener('click', sendText);
 };
 
 ws.onmessage = function(e){
-  var html = '';
-  console.log(e.data);
-  if(e.data != ''){
-      var data = JSON.parse(e.data);
-      for(var i = 0; i < data.length; i++){
+    var html = '';
+
+    if(e.data.length > 0){
+        var data = JSON.parse(e.data);
+
+        for(var i = 0; i < data.length; i++){
         html += data[i] + '<br>';
-      }
-  }
+        }
+    }
   document.getElementById('log').innerHTML = html;
 };
 
 ws.onclose = function(){
   console.log('WebSocket has disconnected');
 };
+
+function sendText(){
+    var message = document.getElementById('message').value;
+
+    if(message.length > 0)
+        chat.push(message);
+
+    ws.send(message);
+
+    document.getElementById('message').value = '';
+}
