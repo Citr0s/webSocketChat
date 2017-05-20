@@ -1,6 +1,14 @@
 var ws = new WebSocket('ws://localhost:7253');
+var messageField = document.getElementById('message');
 var button = document.getElementById('sendButton');
+
 var chat = [];
+
+messageField.addEventListener('keydown', function (e) {
+    if (e.keyCode === 13) {
+        button.click();
+    }
+});
 
 ws.onopen = function () {
     console.log('WebSocket connection is open...');
@@ -28,12 +36,12 @@ ws.onclose = function () {
 };
 
 function sendText() {
-    var message = document.getElementById('message').value;
+    var message = messageField.value;
 
     if (message.length > 0)
         chat.push(message);
 
     ws.send(message);
 
-    document.getElementById('message').value = '';
+    messageField.value = '';
 }
