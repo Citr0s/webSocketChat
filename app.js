@@ -2,33 +2,35 @@ var ws = new WebSocket('ws://localhost:7253');
 var button = document.getElementById('sendButton');
 var chat = [];
 
-ws.onopen = function(){
-  console.log('WebSocket connection is open...');
+ws.onopen = function () {
+    console.log('WebSocket connection is open...');
 
-  button.addEventListener('click', sendText);
+    button.addEventListener('click', sendText);
 };
 
-ws.onmessage = function(e){
+ws.onmessage = function (e) {
     var html = '';
 
-    if(e.data.length > 0){
+    if (e.data.length > 0) {
         var data = JSON.parse(e.data);
 
-        for(var i = 0; i < data.length; i++){
-        html += '<p style="color:' + data[i].colour + '">' + data[i].message + '</p>';
+        for (var i = 0; i < data.length; i++) {
+            var date = new Date(data[i].date);
+
+            html += '<p style="color:' + data[i].colour + '">[' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds() + '] ' + data[i].message + '</p>';
         }
     }
-  document.getElementById('log').innerHTML = html;
+    document.getElementById('log').innerHTML = html;
 };
 
-ws.onclose = function(){
-  console.log('WebSocket has disconnected');
+ws.onclose = function () {
+    console.log('WebSocket has disconnected');
 };
 
-function sendText(){
+function sendText() {
     var message = document.getElementById('message').value;
 
-    if(message.length > 0)
+    if (message.length > 0)
         chat.push(message);
 
     ws.send(message);
