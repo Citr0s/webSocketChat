@@ -15,7 +15,7 @@ ws.onmessage = function(e){
         var data = JSON.parse(e.data);
 
         for(var i = 0; i < data.length; i++){
-        html += data[i] + '<br>';
+        html += '<p style="color:' + data[i].colour + '">' + data[i].message + '</p>';
         }
     }
   document.getElementById('log').innerHTML = html;
