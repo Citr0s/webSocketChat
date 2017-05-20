@@ -1,4 +1,6 @@
-var WebSocketServer = require('ws').Server;
+import * as WebSocket from 'ws';
+
+var WebSocketServer = WebSocket.Server;
 var wss = new WebSocketServer({port: 7253});
 var chat = [];
 var clients = [];
@@ -23,12 +25,15 @@ wss.on('connection', function(ws) {
 
   ws.on('message', function(message) {
 
-      chat.push({
+      let newClient = {
+          date: new Date(),
           message: message,
           colour: clientColourFor(ws)
-      });
+      };
 
-      console.log(chat);
+      chat.push(newClient);
+
+      console.log('[' + newClient.date + '] - ' + newClient.message);
 
       wss.broadcast(JSON.stringify(chat));
   });
