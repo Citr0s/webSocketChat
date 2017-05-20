@@ -1,1 +1,1 @@
-<a href="https://travis-ci.org/miloszmd/webSocketChat">"<img src="https://travis-ci.org/miloszmd/webSocketChat.svg?branch=master"></a>
+<a href="https://travis-ci.org/miloszmd/webSocketChat"><img src="https://travis-ci.org/miloszmd/webSocketChat.svg?branch=master"></a>
