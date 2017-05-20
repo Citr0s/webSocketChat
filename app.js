@@ -25,7 +25,7 @@ ws.onmessage = function (e) {
         for (var i = 0; i < data.length; i++) {
             var date = new Date(data[i].date);
 
-            html += '<p style="color:' + data[i].colour + '">[' + date.getHours() + ':' + date.getMinutes() + ':' + date.getSeconds() + '] ' + data[i].message + '</p>';
+            html += '<p style="color:' + data[i].colour + '">[' + toShortDate(date) + '] ' + data[i].message + '</p>';
         }
     }
     document.getElementById('log').innerHTML = html;
@@ -44,4 +44,12 @@ function sendText() {
     ws.send(message);
 
     messageField.value = '';
+}
+
+function toShortDate(date) {
+    var hours = date.getHours() < 10 ? '0' + date.getHours() : date.getHours();
+    var minutes = date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes();
+    var seconds = date.getSeconds() < 10 ? '0' + date.getSeconds() : date.getSeconds();
+
+    return hours + ':' + minutes + ':' + seconds;
 }

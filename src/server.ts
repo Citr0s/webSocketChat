@@ -1,13 +1,14 @@
 import * as WebSocket from 'ws';
+import { DateFormatter } from "./Helpers/DateFormatter";
 
-var WebSocketServer = WebSocket.Server;
-var wss = new WebSocketServer({port: 7253});
-var chat = [];
-var clients = [];
-var colours = ['#F44336', '#E91E63', '#9C27B0', '#673AB7', '#3F51B5', '#2196F3', '#03A9F4', '#00BCD4', '#009688', '#4CAF50', '#795548', '#795548'];
+let WebSocketServer = WebSocket.Server;
+let wss = new WebSocketServer({port: 7253});
+let chat = [];
+let clients = [];
+let colours = ['#F44336', '#E91E63', '#9C27B0', '#673AB7', '#3F51B5', '#2196F3', '#03A9F4', '#00BCD4', '#009688', '#4CAF50', '#795548', '#795548'];
 
 wss.broadcast = function broadcast(data) {
-    for (var i = 0; i < clients.length; i++) {
+    for (let i = 0; i < clients.length; i++) {
 
         clients[i].client.send(data);
     }
@@ -33,7 +34,7 @@ wss.on('connection', function (ws) {
 
         chat.push(newClient);
 
-        console.log('[' + newClient.date.getHours() + ':' + newClient.date.getMinutes() + ':' + newClient.date.getSeconds() + '] - ' + newClient.message);
+        console.log('[' + new DateFormatter(newClient.date).toShortDate() + '] - ' + newClient.message);
 
         wss.broadcast(JSON.stringify(chat));
     });
@@ -48,7 +49,7 @@ wss.on('connection', function (ws) {
 console.log('WebSocket server listening for connection...');
 
 function clientColourFor(ws) {
-    for (var i = 0; i < clients.length; i++) {
+    for (let i = 0; i < clients.length; i++) {
 
         if (clients[i].client === ws)
             return clients[i].colour;
@@ -56,7 +57,7 @@ function clientColourFor(ws) {
 }
 
 function removeClient(ws) {
-    for (var i = 0; i < clients.length; i++) {
+    for (let i = 0; i < clients.length; i++) {
 
         if (clients[i].client === ws)
             clients.splice(i, 1);
