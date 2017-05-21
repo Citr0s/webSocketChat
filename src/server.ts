@@ -9,8 +9,6 @@ let room = new Room();
 let WebSocketServer = WebSocket.Server;
 let wss = new WebSocketServer({port: 7253});
 
-let colours = ['#F44336', '#E91E63', '#9C27B0', '#673AB7', '#3F51B5', '#2196F3', '#03A9F4', '#00BCD4', '#009688', '#4CAF50', '#795548', '#795548'];
-
 wss.on('connection', function (ws) {
 
     console.log('Client connected');
@@ -18,7 +16,7 @@ wss.on('connection', function (ws) {
     connection.addUser({
         name: 'Unknown',
         client: ws,
-        colour: colours[Math.floor(Math.random() * colours.length)]
+        colour: ''
     });
 
     room.addUser(connection.getUser(ws));
