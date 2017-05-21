@@ -4,9 +4,6 @@ export class Connection {
 
     public users: User[] = [];
 
-    constructor() {
-    }
-
     broadcast(data) {
 
         for (let i = 0; i < this.users.length; i++)
@@ -28,7 +25,7 @@ export class Connection {
     }
 
     removeUser(client: any) {
-        
+
         for (let i = 0; i < this.users.length; i++) {
 
             if (this.users[i].client === client)
