@@ -1,8 +1,11 @@
 import { User } from "../Types/User";
+import { DateFormatter } from "../Helpers/DateFormatter";
+import { Room } from "../Chat/Room";
 
 export class Connection {
 
     public users: User[] = [];
+    public room: Room = new Room();
 
     broadcast(data) {
 
@@ -34,5 +37,42 @@ export class Connection {
             if (this.users[i].client === client)
                 this.users.splice(i, 1);
         }
+    }
+
+    handle(ws) {
+
+        console.log('Client connected');
+
+        this.addUser({
+            name: 'Unknown',
+            client: ws,
+            colour: ''
+        });
+
+        this.room.addUser(this.getUser(ws));
+
+        ws.send(JSON.stringify(this.room.chat));
+
+        ws.on('message', function (message) {
+
+            let newMessage = {
+                date: new Date(),
+                message: message,
+                colour: this.getUser(ws).colour
+            };
+
+            this.room.addMessage(newMessage);
+
+            console.log('[' + new DateFormatter(newMessage.date).toShortDate() + '] - ' + newMessage.message);
+
+            this.broadcast(JSON.stringify(this.room.chat));
+        });
+
+        ws.on('close', function () {
+
+            console.log('Client disconnected');
+
+            this.removeUser(ws);
+        });
     }
 }
