@@ -9,7 +9,9 @@ let room = new Room();
 let WebSocketServer = WebSocket.Server;
 let wss = new WebSocketServer({port: 7253});
 
-wss.on('connection', function (ws) {
+wss.on('connection', handleConnection);
+
+function handleConnection(ws) {
 
     console.log('Client connected');
 
@@ -23,7 +25,11 @@ wss.on('connection', function (ws) {
 
     ws.send(JSON.stringify(room.chat));
 
-    ws.on('message', function (message) {
+    ws.on('message', handleMessage);
+
+    ws.on('close', handleClose);
+
+    function handleMessage(message) {
 
         let newMessage = {
             date: new Date(),
@@ -36,14 +42,14 @@ wss.on('connection', function (ws) {
         console.log('[' + new DateFormatter(newMessage.date).toShortDate() + '] - ' + newMessage.message);
 
         connection.broadcast(JSON.stringify(room.chat));
-    });
+    }
 
-    ws.on('close', function () {
+    function handleClose() {
 
         console.log('Client disconnected');
 
         connection.removeUser(ws);
-    });
-});
+    }
+}
 
 console.log('WebSocket server listening for connection...');
