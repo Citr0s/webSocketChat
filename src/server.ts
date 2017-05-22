@@ -46,7 +46,7 @@ function handleConnection(ws) {
 
         room.addMessage(newMessage);
 
-        console.log('[' + new DateFormatter(newMessage.date).toShortDate() + '] - ' + newMessage.message);
+        console.log('[' + new DateFormatter(newMessage.date).toShortDate() + '] ' + newMessage.name + ' - ' + newMessage.message);
 
         connection.broadcast(JSON.stringify(room.chat));
     }
