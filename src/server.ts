@@ -29,12 +29,19 @@ function handleConnection(ws) {
 
     ws.on('close', handleClose);
 
-    function handleMessage(message) {
+    function handleMessage(request) {
+
+        let parsedRequest = JSON.parse(request);
+        let user = connection.getUser(ws);
+
+        if (user.name === 'Unknown' && parsedRequest.name !== undefined && parsedRequest.name.length > 0)
+            user.name = parsedRequest.name;
 
         let newMessage = {
             date: new Date(),
-            message: message,
-            colour: connection.getUser(ws).colour
+            message: parsedRequest.message,
+            name: user.name,
+            colour: user.colour
         };
 
         room.addMessage(newMessage);

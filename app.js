@@ -1,8 +1,15 @@
 var ws = new WebSocket('ws://localhost:7253');
+var nameField = document.getElementById('name');
 var messageField = document.getElementById('message');
 var button = document.getElementById('sendButton');
 
 var chat = [];
+
+nameField.addEventListener('keydown', function (e) {
+    if (e.keyCode === 13) {
+        button.click();
+    }
+});
 
 messageField.addEventListener('keydown', function (e) {
     if (e.keyCode === 13) {
@@ -10,38 +17,55 @@ messageField.addEventListener('keydown', function (e) {
     }
 });
 
-ws.onopen = function () {
+ws.onopen = handleOpen;
+ws.onmessage = handleMessage;
+ws.onclose = handleClose;
+
+function handleOpen() {
     console.log('WebSocket connection is open...');
 
     button.addEventListener('click', sendText);
-};
+}
 
-ws.onmessage = function (e) {
+function handleMessage(e) {
     var html = '';
 
     if (e.data.length > 0) {
         var data = JSON.parse(e.data);
 
+        console.log(data);
+
         for (var i = 0; i < data.length; i++) {
             var date = new Date(data[i].date);
 
-            html += '<p style="color:' + data[i].colour + '">[' + toShortDate(date) + '] ' + data[i].message + '</p>';
+            html += '<p style="color:' + data[i].colour + '">[' + toShortDate(date) + '] ' + data[i].name + ' - ' + data[i].message + '</p>';
         }
     }
     document.getElementById('log').innerHTML = html;
-};
+}
 
-ws.onclose = function () {
+function handleClose() {
     console.log('WebSocket has disconnected');
-};
+}
 
 function sendText() {
+    var request = {};
+
+    var name = nameField.value;
+
+    if (name.length > 0) {
+        request.name = name;
+        nameField.setAttribute('style', 'display:none;');
+    }
+
     var message = messageField.value;
 
-    if (message.length > 0)
-        chat.push(message);
+    if (message.length > 0) {
+        request.message = message;
+        chat.push(request);
+    }
 
-    ws.send(message);
+    ws.send(JSON.stringify(request));
 
     messageField.value = '';
 }
