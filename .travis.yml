@@ -7,9 +7,6 @@ notifications:
   email: false
   webhooks:
     - https://ci.miloszdura.com/deploy/chat
-  on_success: always
 
 script:
   - gulp build
-
-cache: yarn
