@@ -63,6 +63,7 @@ function sendText() {
         request.name = name;
         nameField.setAttribute('style', 'display:none;');
         localStorage.setItem('name', name);
+        savedName = localStorage.getItem('name');
     }
 
     if (savedName.length > 0)
