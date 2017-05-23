@@ -5,9 +5,9 @@ node_js:
 
 notifications:
   email: false
-  urls:
-      - https://ci.miloszdura.com/deploy/chat
-    on_success: always
+  webhooks:
+    - https://ci.miloszdura.com/deploy/chat
+  on_success: always
 
 script:
   - gulp build
