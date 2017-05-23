@@ -1,0 +1,1 @@
+var WEB_SOCKET_HOST = 'wss://chat.miloszdura.com/ws/';

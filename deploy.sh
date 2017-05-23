@@ -9,6 +9,9 @@ git pull
 echo 'Updating packages...';
 yarn
 
+echo 'Applying live configs...';
+mv config.LIVE.js config.js
+
 echo 'Compiling files...';
 gulp
 

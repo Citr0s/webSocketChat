@@ -1,4 +1,4 @@
-var ws = new WebSocket('ws://localhost:7253');
+var ws = new WebSocket(WEB_SOCKET_HOST);
 var nameField = document.getElementById('name');
 var messageField = document.getElementById('message');
 var button = document.getElementById('sendButton');
