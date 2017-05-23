@@ -2,6 +2,12 @@ var ws = new WebSocket('ws://localhost:7253');
 var nameField = document.getElementById('name');
 var messageField = document.getElementById('message');
 var button = document.getElementById('sendButton');
+var savedName = localStorage.getItem('name');
+
+if (savedName !== null) {
+    if (savedName.length > 0)
+        nameField.setAttribute('style', 'display:none;');
+}
 
 var chat = [];
 
@@ -56,7 +62,11 @@ function sendText() {
     if (name.length > 0) {
         request.name = name;
         nameField.setAttribute('style', 'display:none;');
+        localStorage.setItem('name', name);
     }
+
+    if (savedName.length > 0)
+        request.name = savedName;
 
     var message = messageField.value;
 
