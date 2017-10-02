@@ -6,7 +6,11 @@ node_js:
 notifications:
   email: false
   webhooks:
+  urls:
     - https://ci.miloszdura.com/deploy/chat
+    on_start: always
+    on_success: always
+    on_failure: always
 
 script:
   - gulp build
